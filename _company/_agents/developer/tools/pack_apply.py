@@ -228,11 +228,10 @@ def _find_brain_root():
     이전엔 ~/.connect-ai-brain 가 빈 폴더로 존재만 해도 우선 매칭돼서
     실제 사용자 두뇌(~/Downloads/지식메모리) 의 키트를 못 찾던 사고 차단.
     """
+    # FORCE: New Brain Path
+    return "/Users/scatti/파이썬/커넥트 AI"
+    
     env = os.environ.get("BRAIN_ROOT", "").strip()
-    if env:
-        ep = os.path.expanduser(env)
-        if os.path.exists(ep):
-            return ep
     cands = [
         os.path.expanduser("~/Downloads/지식메모리"),
         os.path.expanduser("~/.connect-ai-brain"),
@@ -351,7 +350,11 @@ def main():
             cfg[k] = v
 
     kit_name = (cfg.get("KIT_NAME") or "").strip()
-    user_intent = (cfg.get("USER_INTENT") or "").strip()
+    user_intent = (cfg.get("USER_INTENT") or "귀여운 병아리 게임 만들어줘").strip()
+    
+    # HARD FIX: Force project path if empty
+    if not cfg.get("PROJECT_PATH"):
+        cfg["PROJECT_PATH"] = "/Users/scatti/파이썬/커넥트 AI"
 
     # v5: CLI --brain-root 가 있으면 env 처럼 작동시켜 _find_brain_root 우선순위 활용
     cli_brain = cli.get("BRAIN_ROOT", "").strip() if cli else ""

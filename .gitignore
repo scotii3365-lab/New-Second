@@ -7,3 +7,8 @@ node_modules/
 *.log
 .cache/
 Thumbs.db
+
+# Credentials and Local Configs
+*_local.json
+*.local.json
+_company/_agents/youtube/oauth.local.json
