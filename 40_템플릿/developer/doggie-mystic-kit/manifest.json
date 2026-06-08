@@ -1,0 +1,54 @@
+{
+  "name": "강아지사주 (Doggie Mystic)",
+  "version": "1.0.0",
+  "category": "service",
+  "description": "AI 한국 사주 명리학 강아지 운명 서비스 + PayPal 결제 ($4.99 잠금 해제). Gemini + Imagen 3 통합.",
+  "base": "vanilla HTML + Gemini API + PayPal SDK + Imagen 3",
+  "components": [
+    "index.html"
+  ],
+  "keywords": [
+    "강아지",
+    "dog",
+    "pet",
+    "반려견",
+    "사모예드",
+    "samoyed",
+    "사주",
+    "fortune",
+    "astrology",
+    "mystic",
+    "운명",
+    "명리학",
+    "한국",
+    "korean",
+    "k-style",
+    "kculture",
+    "gemini",
+    "제미나이",
+    "ai",
+    "paypal",
+    "페이팔",
+    "결제",
+    "인앱",
+    "수익화",
+    "글로벌",
+    "global",
+    "서비스",
+    "saas"
+  ],
+  "dependencies": {
+    "production": [],
+    "dev": []
+  },
+  "tested_with": {
+    "browser": "modern (Chrome 100+ / Safari 15+)"
+  },
+  "apply": {
+    "copy_to": ".",
+    "post_install": [],
+    "open_in_browser": "index.html"
+  },
+  "_injectedAt": "2026-06-08T13:21:52.177Z",
+  "_injectedFrom": "ezer-ai"
+}

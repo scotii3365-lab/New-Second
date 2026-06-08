@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>🌸 Doggie Mystic — Korean Fortune for your Pup 🐾</title>
+
+<!-- 🔐 운영자(1인 기업) 자격증명 — pack_apply 가 운영자의 Connect AI 외부 연결
+     패널 키를 자동으로 박아 넣음. 고객은 키 입력 UI 안 봄.
+     보안: Google Cloud Console 에서 Gemini API 키에 HTTP Referer 제한 설정 권장
+     (운영자의 도메인에서만 작동하게). PayPal 도 Live/Sandbox 환경 분리. -->
+<script>
+  // pack_apply 가 빌드 시 자동 교체: __GEMINI_API_KEY__ / __PAYPAL_CLIENT_ID__
+  window.GEMINI_API_KEY = '__GEMINI_API_KEY__';
+  window.PAYPAL_CLIENT_ID = '__PAYPAL_CLIENT_ID__';
+</script>
+<script>
+  // PayPal SDK — 운영자가 키 박은 경우만 로드
+  (function loadPayPal() {
+    const cid = window.PAYPAL_CLIENT_ID;
+    if (!cid || cid === '__PAYPAL_CLIENT_ID__' || cid.length < 20) {
+      console.log('[Doggie Mystic] PayPal not configured — payment disabled');
+      return;
+    }
+    const s = document.createElement('script');
+    s.id = 'paypalSdkScript';
+    s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cid) + '&currency=USD';
+    s.onload = () => { window._paypalReady = true; };
+    document.head.appendChild(s);
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Comfortaa:wght@400;600;700&family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ═════════════ Dreamy K-Cute palette ═════════════ */
+  :root {
+    --bg-cream: #fef9f3;
+    --bg-blush: #fff5f7;
+    --bg-mist: #f5f0ff;
+    --pink-soft: #fbcfe8;
+    --pink: #f9a8d4;
+    --pink-deep: #ec4899;
+    --lavender: #c4b5fd;
+    --lavender-deep: #a78bfa;
+    --gold: #fbbf24;
+    --gold-light: #fde68a;
+    --cream: #fef3c7;
+    --mint: #a7f3d0;
+    --mint-deep: #6ee7b7;
+    --cyan: #67e8f9;
+    --peach: #fed7aa;
+    --rose: #fb7185;
+    --ink: #4c1d95;
+    --ink-soft: #6b21a8;
+    --text: #4a2a6f;
+    --text-soft: #9b91b5;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100vh; }
+  body {
+    font-family: 'Fredoka', 'Comfortaa', -apple-system, sans-serif;
+    background:
+      radial-gradient(ellipse at 0% 0%, var(--pink-soft) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 0%, var(--lavender) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, var(--mint) 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg-blush) 0%, var(--bg-cream) 50%, var(--bg-mist) 100%);
+    color: var(--text);
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ═════════════ Floating stars + paws background ═════════════ */
+  .floating-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .floating-bg .icon {
+    position: absolute;
+    animation: floatAround 20s linear infinite;
+    opacity: 0.4;
+    user-select: none;
+  }
+  @keyframes floatAround {
+    0% { transform: translate(0, 100vh) rotate(0deg); }
+    100% { transform: translate(0, -20vh) rotate(360deg); }
+  }
+  @keyframes spinSlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Subtle paw pattern */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(251, 207, 232, 0.15) 0%, transparent 8%),
+      radial-gradient(circle at 80% 60%, rgba(196, 181, 253, 0.15) 0%, transparent 8%),
+      radial-gradient(circle at 50% 80%, rgba(167, 243, 208, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 30% 95%, rgba(253, 230, 138, 0.15) 0%, transparent 8%);
+    pointer-events: none;
+  }
+
+  /* ═════════════ Main container ═════════════ */
+  .wrap {
+    position: relative; z-index: 2;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ═════════════ Hero — Doggie magical headline ═════════════ */
+  .hero { text-align: center; margin-bottom: 30px; position: relative; padding: 20px 0; }
+
+  /* Dog SVG mascot */
+  .mascot {
+    width: 160px; height: 160px;
+    margin: 0 auto 8px;
+    position: relative;
+    animation: mascotBob 3s ease-in-out infinite;
+    filter: drop-shadow(0 12px 30px rgba(236, 72, 153, 0.25));
+  }
+  @keyframes mascotBob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+  /* Sparkles around mascot */
+  .mascot-sparkle {
+    position: absolute;
+    font-size: 1.6rem;
+    pointer-events: none;
+    animation: sparkleSpin 4s ease-in-out infinite;
+  }
+  .mascot-sparkle.s1 { top: -10px; left: -10px; animation-delay: 0s; }
+  .mascot-sparkle.s2 { top: 10px; right: -16px; animation-delay: 1s; }
+  .mascot-sparkle.s3 { bottom: 20px; left: -20px; animation-delay: 2s; }
+  .mascot-sparkle.s4 { bottom: -8px; right: 5px; animation-delay: 1.5s; }
+  @keyframes sparkleSpin {
+    0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0); }
+    50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, var(--lavender-deep), var(--pink-deep));
+    color: white;
+    border-radius: 999px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink-deep) 0%, var(--lavender-deep) 30%, var(--gold) 60%, var(--mint-deep) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: rainbow 6s ease-in-out infinite;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  @keyframes rainbow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-sub {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.5rem;
+    color: var(--lavender-deep);
+    margin-bottom: 4px;
+  }
+  .hero-sub-en {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  /* ═════════════ Form Card — fluffy cloud ═════════════ */
+  .form-card {
+    background: var(--white);
+    border-radius: 32px;
+    padding: 30px 26px;
+    box-shadow:
+      0 20px 60px rgba(167, 139, 250, 0.15),
+      0 4px 16px rgba(251, 207, 232, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(196, 181, 253, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(253, 230, 138, 0.15) 0%, transparent 30%);
+    animation: spinSlow 30s linear infinite;
+    pointer-events: none;
+  }
+  .form-card > * { position: relative; z-index: 1; }
+
+  .form-card-title {
+    text-align: center;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+  .form-card-title .emoji {
+    display: inline-block;
+    animation: wave 2s ease-in-out infinite;
+  }
+  @keyframes wave {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(15deg); }
+  }
+
+  .form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .form-row label {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .form-row input, .form-row select {
+    background: var(--bg-mist);
+    border: 2px solid rgba(196, 181, 253, 0.25);
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .form-row input::placeholder { color: var(--text-soft); }
+  .form-row input:focus, .form-row select:focus {
+    outline: none;
+    border-color: var(--lavender-deep);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+  }
+  .form-row select option { background: white; color: var(--text); }
+
+  /* Photo drop zone — cloud shape */
+  .photo-drop {
+    border: 3px dashed rgba(167, 139, 250, 0.4);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: linear-gradient(180deg, var(--bg-blush), var(--bg-mist));
+    min-height: 160px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-drop:hover {
+    border-color: var(--pink-deep);
+    background: linear-gradient(180deg, var(--pink-soft), var(--lavender));
+    transform: scale(1.02) translateY(-2px);
+  }
+  .photo-drop.dragover {
+    border-color: var(--mint-deep);
+    background: var(--mint);
+    box-shadow: 0 0 40px var(--mint-deep);
+  }
+  .photo-drop.has-image { padding: 0; border-style: solid; border-color: var(--pink); }
+  .photo-drop img {
+    width: 100%; max-height: 260px; object-fit: cover;
+    border-radius: 20px; display: block;
+  }
+  .photo-drop .drop-icon { font-size: 2.6rem; animation: mascotBob 3s ease-in-out infinite; }
+  .photo-drop .drop-text { color: var(--text-soft); font-size: 0.95rem; font-weight: 500; }
+  .photo-drop input[type="file"] { display: none; }
+
+  /* CTA button — gummy candy */
+  .btn-reveal {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: white;
+    background: linear-gradient(135deg, var(--pink-deep) 0%, var(--lavender-deep) 50%, var(--rose) 100%);
+    background-size: 200% 200%;
+    box-shadow:
+      0 10px 30px rgba(236, 72, 153, 0.4),
+      inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    animation: rainbow 4s ease-in-out infinite;
+  }
+  .btn-reveal:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(236, 72, 153, 0.55);
+  }
+  .btn-reveal:active { transform: translateY(0) scale(0.98); }
+  .btn-reveal:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-reveal::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: translateX(-100%);
+  }
+  .btn-reveal:hover::before {
+    animation: shimmer 1s ease-out;
+  }
+  @keyframes shimmer {
+    to { transform: translateX(100%); }
+  }
+  .btn-reveal .btn-stars {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    animation: bounceX 1.5s ease-in-out infinite;
+  }
+  .btn-reveal .btn-stars.left { left: 16px; animation-delay: 0s; }
+  .btn-reveal .btn-stars.right { right: 16px; animation-delay: 0.75s; }
+  @keyframes bounceX {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.3); }
+  }
+
+  /* ═════════════ Loading ═════════════ */
+  .loading {
+    display: none; text-align: center; padding: 50px 20px;
+  }
+  .loading.show { display: block; }
+  .crystal-ball {
+    width: 100px; height: 100px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, white 0%, var(--pink-soft) 25%, var(--lavender) 60%, var(--lavender-deep) 100%);
+    box-shadow:
+      0 0 60px var(--pink),
+      0 0 100px var(--lavender),
+      inset -10px -10px 40px rgba(196, 181, 253, 0.6),
+      inset 10px 10px 30px rgba(255, 255, 255, 0.6);
+    animation: orbFloat 3s ease-in-out infinite;
+    position: relative;
+  }
+  .crystal-ball::before {
+    content: '✨';
+    position: absolute; top: 20%; left: 25%;
+    font-size: 1.5rem;
+    animation: sparkleSpin 2s ease-in-out infinite;
+  }
+  .crystal-ball::after {
+    content: '🐾';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 2rem;
+  }
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); filter: hue-rotate(0); }
+    50% { transform: translateY(-12px) scale(1.05); filter: hue-rotate(30deg); }
+  }
+  .loading p {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1.05rem;
+    color: var(--lavender-deep);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .loading-dots {
+    display: inline-block; margin-left: 4px;
+  }
+  .loading-dots span {
+    display: inline-block;
+    animation: dotBounce 1.4s ease-in-out infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ═════════════ Result section ═════════════ */
+  .result { margin-top: 36px; display: none; }
+  .result.show { display: block; animation: fadeUp 0.7s ease-out; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reading-card {
+    background: white;
+    border-radius: 28px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 16px 40px rgba(167, 139, 250, 0.12),
+      0 4px 12px rgba(251, 207, 232, 0.2);
+    border: 2px solid transparent;
+    animation: cardReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reading-card:nth-child(1) {
+    background: linear-gradient(135deg, white 0%, var(--bg-blush) 100%);
+    border-color: var(--pink-soft);
+  }
+  .reading-card:nth-child(2) {
+    background: linear-gradient(135deg, white 0%, var(--bg-mist) 100%);
+    border-color: rgba(196, 181, 253, 0.4);
+  }
+  .reading-card:nth-child(3) {
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border-color: rgba(253, 230, 138, 0.5);
+  }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .reading-card::before {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 80px; height: 80px;
+    background-size: contain; background-repeat: no-repeat;
+    opacity: 0.15;
+  }
+  .reading-card:nth-child(1)::before { content: '🌸'; font-size: 80px; }
+  .reading-card:nth-child(2)::before { content: '🌙'; font-size: 80px; }
+  .reading-card:nth-child(3)::before { content: '🪄'; font-size: 80px; }
+
+  .reading-card .card-num {
+    display: inline-block;
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--gold), var(--rose));
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-right: 8px;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  }
+  .reading-card h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-weight: 700;
+    display: flex; align-items: center;
+  }
+  .reading-card .ko-title {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.25rem;
+    color: var(--pink-deep);
+    margin-bottom: 14px;
+    margin-left: 40px;
+  }
+  .reading-card .body {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .reading-card .body strong {
+    color: var(--pink-deep);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 60%, var(--gold-light) 60%);
+    padding: 0 2px;
+  }
+  .reading-card .body em {
+    color: var(--lavender-deep);
+    font-style: italic;
+  }
+
+  /* PRO unlock section — gold sparkle */
+  .pro-section {
+    margin-top: 28px;
+    background:
+      linear-gradient(145deg, var(--cream) 0%, var(--bg-blush) 100%);
+    border: 3px solid var(--gold);
+    border-radius: 28px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(251, 191, 36, 0.2);
+  }
+  .pro-section::before {
+    content: '✨'; position: absolute; top: 20px; right: 20px;
+    font-size: 2rem; animation: sparkleSpin 3s ease-in-out infinite;
+  }
+  .pro-section.unlocked {
+    border-color: var(--mint-deep);
+    background: linear-gradient(145deg, var(--mint) 0%, var(--bg-cream) 100%);
+  }
+  .pro-section.unlocked::before { content: '💚'; }
+
+  .pro-head {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .pro-head .crown {
+    font-size: 1.6rem;
+    animation: wave 2s ease-in-out infinite;
+  }
+  .pro-features { list-style: none; padding: 0; margin: 0 0 20px; }
+  .pro-features li {
+    padding: 8px 0;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: 'Comfortaa', sans-serif;
+    border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pro-features li:last-child { border-bottom: none; }
+  .pro-features li .feat-icon {
+    font-size: 1.2rem;
+    display: inline-block;
+    animation: floatTiny 2s ease-in-out infinite;
+  }
+  .pro-features li:nth-child(2) .feat-icon { animation-delay: 0.3s; }
+  .pro-features li:nth-child(3) .feat-icon { animation-delay: 0.6s; }
+  .pro-features li:nth-child(4) .feat-icon { animation-delay: 0.9s; }
+  .pro-features li:nth-child(5) .feat-icon { animation-delay: 1.2s; }
+  .pro-features li:nth-child(6) .feat-icon { animation-delay: 1.5s; }
+  @keyframes floatTiny {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  .pro-price { text-align: center; margin: 18px 0; }
+  .pro-price .num {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink-deep), var(--gold));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    line-height: 1;
+  }
+  .pro-price .label {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  #paypal-buttons-container {
+    background: white; border-radius: 14px; padding: 14px;
+    min-height: 80px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  .pro-trust {
+    text-align: center; margin-top: 14px;
+    color: var(--text-soft); font-size: 0.78rem;
+    font-family: 'Comfortaa', sans-serif;
+  }
+
+  /* Mystic image card after unlock */
+  .mystic-image-card {
+    margin-top: 22px;
+    background: linear-gradient(145deg, white 0%, var(--bg-mist) 100%);
+    border: 3px solid var(--lavender);
+    border-radius: 28px;
+    padding: 22px;
+    box-shadow: 0 20px 50px rgba(167, 139, 250, 0.25);
+    text-align: center;
+    animation: cardReveal 1.2s ease-out;
+  }
+  .mystic-image-card img {
+    width: 100%; max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(167, 139, 250, 0.3);
+    transition: transform 0.3s;
+  }
+  .mystic-image-card img:hover { transform: scale(1.02); }
+  .mystic-image-card .card-name {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.3rem;
+    color: var(--pink-deep);
+    margin: 16px 0 4px;
+    font-weight: 700;
+  }
+  .mystic-image-card .card-breed {
+    font-family: 'Nanum Pen Script', cursive;
+    color: var(--lavender-deep);
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .mystic-image-card .download-btn {
+    display: inline-block; margin: 0 6px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--pink-deep), var(--lavender-deep));
+    color: white;
+    text-decoration: none;
+    border-radius: 999px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.35);
+    transition: all 0.2s;
+  }
+  .mystic-image-card .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(236, 72, 153, 0.5);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: white;
+    border: 2px solid var(--pink);
+    border-radius: 16px;
+    padding: 14px 22px;
+    color: var(--ink);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50; max-width: 90%;
+    box-shadow: 0 12px 30px rgba(236, 72, 153, 0.2);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 36px 20px 0;
+    color: var(--text-soft); font-size: 0.85rem;
+    font-family: 'Comfortaa', sans-serif;
+    margin-top: 30px;
+  }
+  footer .heart { color: var(--pink-deep); animation: heartBeat 1.5s ease-in-out infinite; display: inline-block; }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  footer a { color: var(--lavender-deep); text-decoration: none; font-weight: 600; }
+
+  /* ═════════════ SETUP card (API keys) ═════════════ */
+  .setup-card {
+    background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%);
+    border: 3px dashed var(--gold);
+    border-radius: 24px;
+    padding: 22px 22px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .setup-card::before {
+    content: '🔑'; position: absolute; top: 14px; right: 16px;
+    font-size: 1.8rem; animation: wave 2s ease-in-out infinite;
+  }
+  .setup-card h2 {
+    font-family: 'Fredoka', sans-serif;
+    color: var(--ink); font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .setup-card p {
+    font-family: 'Comfortaa', sans-serif;
+    color: var(--text-soft); font-size: 0.85rem;
+    margin-bottom: 14px; line-height: 1.5;
+  }
+  .setup-card a { color: var(--lavender-deep); font-weight: 700; }
+  .setup-card .field { margin-bottom: 10px; }
+  .setup-card label {
+    display: block; font-size: 0.78rem; color: var(--ink-soft);
+    font-weight: 700; margin-bottom: 4px;
+    font-family: 'Comfortaa', sans-serif;
+  }
+  .setup-card input {
+    width: 100%; padding: 10px 12px;
+    border: 2px solid rgba(251, 191, 36, 0.4); border-radius: 12px;
+    font-family: 'Fredoka', sans-serif; font-size: 0.9rem;
+    background: white; color: var(--text);
+  }
+  .setup-card input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25); }
+  .setup-card .btn-save {
+    width: 100%; margin-top: 8px;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--gold), var(--peach));
+    color: var(--ink-soft);
+    border: none; border-radius: 12px;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(251, 191, 36, 0.3);
+  }
+  .setup-card .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(251, 191, 36, 0.5); }
+  .setup-card .status { display: flex; gap: 12px; margin: 12px 0; font-size: 0.78rem; }
+  .setup-card .status .pill { padding: 4px 10px; border-radius: 999px; font-weight: 700; }
+  .setup-card .status .ok { background: var(--mint); color: #14532d; }
+  .setup-card .status .err { background: var(--pink-soft); color: #831843; }
+  .setup-card details summary { cursor: pointer; color: var(--lavender-deep); font-weight: 700; font-size: 0.85rem; margin-top: 8px; }
+  .setup-card details ol { margin: 8px 0 0 20px; font-size: 0.82rem; color: var(--text); line-height: 1.7; }
+
+  /* ═════════════ Premium CTA (improved — "AI Magic Unlock") ═════════════ */
+  .magic-cta {
+    margin-top: 22px;
+    background:
+      linear-gradient(135deg, var(--pink-deep) 0%, var(--lavender-deep) 35%, var(--gold) 70%, var(--mint-deep) 100%);
+    background-size: 300% 300%;
+    animation: rainbow 5s ease-in-out infinite;
+    border-radius: 28px;
+    padding: 3px;
+    box-shadow: 0 20px 50px rgba(236, 72, 153, 0.3);
+  }
+  .magic-cta-inner {
+    background: white;
+    border-radius: 25px;
+    padding: 24px 22px;
+    text-align: center;
+  }
+  .magic-cta-eyebrow {
+    display: inline-block; padding: 5px 14px;
+    background: linear-gradient(135deg, var(--gold), var(--rose));
+    color: white;
+    border-radius: 999px;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  }
+  .magic-cta h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.6rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--pink-deep), var(--lavender-deep));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 4px;
+  }
+  .magic-cta .ko-title {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.15rem; color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .magic-cta .features {
+    list-style: none; margin: 0 0 18px;
+    text-align: left; max-width: 320px; margin-left: auto; margin-right: auto;
+  }
+  .magic-cta .features li {
+    padding: 7px 0; font-family: 'Comfortaa', sans-serif;
+    color: var(--text); font-size: 0.92rem; font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .magic-cta .features li .ic {
+    font-size: 1.3rem; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-soft), var(--lavender));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .magic-cta .price-row {
+    display: flex; align-items: baseline; justify-content: center; gap: 10px;
+    margin: 8px 0 4px;
+  }
+  .magic-cta .price-strike {
+    font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+    color: var(--text-soft); text-decoration: line-through;
+  }
+  .magic-cta .price-num {
+    font-family: 'Fredoka', sans-serif; font-size: 2.8rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--pink-deep), var(--gold));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .magic-cta .price-label {
+    font-size: 0.78rem; color: var(--text-soft);
+    font-family: 'Comfortaa', sans-serif;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .magic-cta .trust-row {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px dashed rgba(196, 181, 253, 0.3);
+    display: flex; justify-content: center; gap: 12px;
+    font-size: 0.72rem; color: var(--text-soft);
+    font-family: 'Comfortaa', sans-serif;
+    flex-wrap: wrap;
+  }
+  .magic-cta .trust-row span::before { content: '✓'; color: var(--mint-deep); font-weight: 700; margin-right: 4px; }
+
+  /* Generation in-progress dramatic state */
+  .magic-cta.generating {
+    box-shadow: 0 0 60px var(--lavender-deep), 0 0 100px var(--gold-light);
+  }
+  .magic-cta.generating .magic-cta-inner {
+    background: linear-gradient(145deg, white, var(--bg-mist));
+  }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 20px 14px 60px; }
+    .form-card, .pro-section, .setup-card, .magic-cta-inner { padding: 22px 18px; border-radius: 24px; }
+    .reading-card { padding: 22px 18px; border-radius: 22px; }
+    .mascot { width: 120px; height: 120px; }
+    .magic-cta h2 { font-size: 1.3rem; }
+    .magic-cta .price-num { font-size: 2.3rem; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Floating background icons -->
+<div class="floating-bg" id="floatingBg"></div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <!-- 🐕 Samoyed Mascot SVG -->
+    <div class="mascot">
+      <span class="mascot-sparkle s1">✨</span>
+      <span class="mascot-sparkle s2">🌟</span>
+      <span class="mascot-sparkle s3">⭐</span>
+      <span class="mascot-sparkle s4">💫</span>
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="furGrad" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#fdfaff"/>
+            <stop offset="100%" stop-color="#f0e7ff"/>
+          </radialGradient>
+          <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fbcfe8"/>
+            <stop offset="100%" stop-color="#fbcfe8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- Halo / magical ring -->
+        <ellipse cx="100" cy="40" rx="55" ry="10" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3 3" opacity="0.7">
+          <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="4s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- Body -->
+        <ellipse cx="100" cy="135" rx="62" ry="48" fill="url(#furGrad)" stroke="#e7dffa" stroke-width="2"/>
+        <!-- Head -->
+        <circle cx="100" cy="85" r="50" fill="url(#furGrad)" stroke="#e7dffa" stroke-width="2"/>
+        <!-- Ears (Samoyed pointy) -->
+        <path d="M 60 55 L 50 30 L 75 50 Z" fill="url(#furGrad)" stroke="#e7dffa" stroke-width="2"/>
+        <path d="M 140 55 L 150 30 L 125 50 Z" fill="url(#furGrad)" stroke="#e7dffa" stroke-width="2"/>
+        <!-- Inner ear pink -->
+        <path d="M 60 53 L 56 38 L 70 50 Z" fill="#fbcfe8" opacity="0.7"/>
+        <path d="M 140 53 L 144 38 L 130 50 Z" fill="#fbcfe8" opacity="0.7"/>
+        <!-- Cheeks blush -->
+        <circle cx="72" cy="98" r="11" fill="url(#cheekGrad)" opacity="0.9"/>
+        <circle cx="128" cy="98" r="11" fill="url(#cheekGrad)" opacity="0.9"/>
+        <!-- Eyes (smiling) -->
+        <path d="M 80 78 Q 84 82 88 78" stroke="#4c1d95" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M 112 78 Q 116 82 120 78" stroke="#4c1d95" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Eye sparkle -->
+        <circle cx="83" cy="76" r="1.5" fill="white"/>
+        <circle cx="115" cy="76" r="1.5" fill="white"/>
+        <!-- Nose -->
+        <ellipse cx="100" cy="92" rx="5" ry="4" fill="#4c1d95"/>
+        <!-- Mouth (smile + tongue) -->
+        <path d="M 100 96 Q 100 102 95 105" stroke="#4c1d95" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 100 96 Q 100 102 105 105" stroke="#4c1d95" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="100" cy="106" rx="6" ry="4" fill="#f9a8d4"/>
+        <!-- Star on forehead (mystic!) -->
+        <text x="100" y="65" font-size="14" text-anchor="middle" fill="#fbbf24" font-weight="bold">✦</text>
+      </svg>
+    </div>
+
+    <div class="hero-eyebrow">✨ AI Korean Astrology · K-Mystic ✨</div>
+    <h1>Doggie Mystic</h1>
+    <p class="hero-sub">우리 강아지의 신비로운 운명 🌙</p>
+    <p class="hero-sub-en">Discover what the stars say about your pup 🐾✨</p>
+  </header>
+
+  <section class="form-card">
+    <div class="form-card-title">
+      <span class="emoji">🐾</span>
+      Tell us about your fur baby
+      <span class="emoji">🐾</span>
+    </div>
+
+    <div class="form-row">
+      <label>📸 Doggie photo <span style="color:var(--text-soft); font-weight:400;">(optional)</span></label>
+      <div class="photo-drop" id="photoDrop">
+        <input type="file" id="photo" accept="image/*" />
+        <div class="drop-icon">🐶</div>
+        <div class="drop-text">Drop your puppy here or tap to upload</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>🐕 What's their name? <span style="color:var(--pink-deep); font-family:'Nanum Pen Script';">(이름)</span></label>
+      <input type="text" id="dogName" placeholder="Luna 🌙" autocomplete="off" />
+    </div>
+
+    <div class="form-row">
+      <label>🎂 Their birthday <span style="color:var(--pink-deep); font-family:'Nanum Pen Script';">(생일)</span></label>
+      <input type="date" id="dogBirthday" />
+    </div>
+
+    <div class="form-row">
+      <label>🐾 Breed <span style="color:var(--pink-deep); font-family:'Nanum Pen Script';">(견종)</span></label>
+      <select id="dogBreed">
+        <option value="Samoyed">🤍 Samoyed (사모예드)</option>
+        <option value="Pomeranian">🧡 Pomeranian (포메라니안)</option>
+        <option value="Shiba Inu">🦊 Shiba Inu (시바견)</option>
+        <option value="Golden Retriever">🌟 Golden Retriever</option>
+        <option value="Poodle">☁️ Poodle (푸들)</option>
+        <option value="Maltese">🤍 Maltese (말티즈)</option>
+        <option value="Bichon Frise">☁️ Bichon Frise (비숑프리제)</option>
+        <option value="Welsh Corgi">🥨 Welsh Corgi (웰시코기)</option>
+        <option value="Husky">❄️ Siberian Husky</option>
+        <option value="Dachshund">🌭 Dachshund</option>
+        <option value="French Bulldog">🐽 French Bulldog</option>
+        <option value="Beagle">🎵 Beagle</option>
+        <option value="Mixed">💕 Mixed Breed (믹스견)</option>
+        <option value="Other">✨ Other breed</option>
+      </select>
+    </div>
+
+    <button class="btn-reveal" id="revealBtn">
+      <span class="btn-stars left">✨</span>
+      <span>Reveal the Mystic</span>
+      <span class="btn-stars right">✨</span>
+    </button>
+  </section>
+
+  <div class="loading" id="loading">
+    <div class="crystal-ball"></div>
+    <p>Consulting the ancient stars<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></p>
+  </div>
+
+  <section class="result" id="result"></section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  Made with <span class="heart">💕</span> by your AI 1-person company<br/>
+  <a href="https://github.com/wonseokjung/connect-ai">Connect AI</a> · 100% local · 100% free
+</footer>
+
+<script>
+// ============ Floating background icons ============
+(function spawnFloating() {
+  const wrap = document.getElementById('floatingBg');
+  const icons = ['✨', '🌟', '⭐', '💫', '🌙', '🐾', '🌸', '💕', '☁️', '🌈', '🦴'];
+  const count = 14;
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement('span');
+    span.className = 'icon';
+    span.textContent = icons[Math.floor(Math.random() * icons.length)];
+    span.style.left = (Math.random() * 100) + '%';
+    span.style.fontSize = (16 + Math.random() * 18) + 'px';
+    span.style.animationDuration = (20 + Math.random() * 30) + 's';
+    span.style.animationDelay = (-Math.random() * 20) + 's';
+    wrap.appendChild(span);
+  }
+})();
+
+// ============ Photo upload ============
+const photoDrop = document.getElementById('photoDrop');
+const photoInput = document.getElementById('photo');
+let dogPhotoDataUrl = null;
+photoDrop.addEventListener('click', () => photoInput.click());
+photoInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+['dragenter', 'dragover'].forEach(ev => photoDrop.addEventListener(ev, e => { e.preventDefault(); photoDrop.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => photoDrop.addEventListener(ev, e => { e.preventDefault(); photoDrop.classList.remove('dragover'); }));
+photoDrop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+function handleFile(file) {
+  const r = new FileReader();
+  r.onload = e => {
+    dogPhotoDataUrl = e.target.result;
+    photoDrop.classList.add('has-image');
+    photoDrop.innerHTML = '<img src="' + dogPhotoDataUrl + '" alt="dog" />';
+  };
+  r.readAsDataURL(file);
+}
+
+// ============ Toast ============
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ============ Gemini API (v2026.02 models — 3.1 series) ============
+// Text: gemini-3.1-flash-lite-preview (멀티모달 입력, 1M context, 가성비)
+// Image: gemini-3.1-flash-image-preview (텍스트 + 이미지 동시 출력, multimodal)
+async function callGemini(prompt, modelName) {
+  const apiKey = window.GEMINI_API_KEY;
+  const model = modelName || window.GEMINI_TEXT_MODEL || 'gemini-3.1-flash-lite-preview';
+  if (!apiKey || apiKey === '__GEMINI_API_KEY__' || apiKey === 'YOUR_GEMINI_API_KEY' || apiKey.length < 20) {
+    return mockGeminiResponse(prompt);
+  }
+  try {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 1.0, topP: 0.95, maxOutputTokens: 4096 }
+      })
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || 'Gemini error');
+    // 멀티 part 합치기 (v3.1 은 thinking + text 분리 가능)
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    const text = parts.filter(p => p.text).map(p => p.text).join('\n');
+    return text || mockGeminiResponse(prompt);
+  } catch (e) {
+    console.warn('Gemini call failed:', e);
+    showToast('🌌 Using offline mystic mode');
+    return mockGeminiResponse(prompt);
+  }
+}
+
+function mockGeminiResponse(prompt) {
+  if (prompt.includes('SHORT FREE')) {
+    return `# The Cloud Spirit\n*하늘의 영혼 — Spirit of the Sky*\n\nYour pup carries the **cloud essence**, born under harmony of yin and yang. A gentle soul wrapped in mystery — *playful yet deeply intuitive*, drawn to high places and morning light.\n\n# The Element of Water\n*오행의 기운 — Element Reading*\n\nThe **Water element (수, 水)** flows strongest. Soft pawsteps, fluid emotions, and an uncanny sense for human moods. Their lucky direction: *north*. Their lucky color: **silver and pearl white**.\n\n# Past-Life Bond\n*전생의 인연 — Karmic Connection*\n\nIn a past life, your dog was likely a **temple guardian** — patient, watchful, walking quiet halls at dawn. The reason you found each other was *no accident*. Your souls have always been linked. ✨`;
+  }
+  return `# Lifelong Destiny\n*평생 운명 — Lifelong Fortune*\n\nYour pup is destined for **gentle abundance**. The strongest years lie in their 4th to 7th — a time of friendship, travel, and a deep bond with one specific human (likely you). They will live *longer than expected* for their breed, carried by their bright spirit.\n\n# Health Guidance\n*건강운 — Health Reading*\n\nThe Water element brings **strong joints and kidneys**, but watch for *dampness in cold months*. Recommend: warm-leaning diet (cooked pumpkin, salmon, sweet potato). Avoid: long swims in winter. Lucky food: **cooked oats with a drop of honey**.\n\n# Walking Hours\n*산책 시각 — Walking Direction*\n\nBest walks: **7am–9am (Dragon hour)** and **5pm–7pm (Rooster hour)**. *North-facing routes* bring good fortune. Avoid full noon sun in summer.\n\n# Compatible Pups\n*궁합 견종 — Compatible Breeds*\n\nBest friends: **Bichon Frise, Maltese, Pomeranian**. Avoid: high-energy hunting breeds in close quarters. Best human companion: those born in the *Year of the Rabbit or Sheep* (calm, patient).\n\n# Wealth Influence\n*재물운 — Owner Fortune*\n\nThis pup brings **soft wealth** — not lottery luck, but *slow, sustainable abundance*. They are a **lucky charm for creative work** (writing, art, music). Expect three significant opportunities in the next 12 months that this dog will "be present" for.`;
+}
+
+async function generateMysticImage(prompt) {
+  const apiKey = window.GEMINI_API_KEY;
+  const model = window.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview';
+  if (!apiKey || apiKey === '__GEMINI_API_KEY__' || apiKey === 'YOUR_GEMINI_API_KEY' || apiKey.length < 20) return null;
+  try {
+    // Gemini 3.1 Flash Image — generateContent endpoint with IMAGE response modality
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+      })
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || 'image error');
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    for (const p of parts) {
+      if (p.inlineData?.data) {
+        const mime = p.inlineData.mimeType || 'image/png';
+        return 'data:' + mime + ';base64,' + p.inlineData.data;
+      }
+    }
+    return null;
+  } catch (e) {
+    console.warn('Image generation failed:', e);
+    return null;
+  }
+}
+
+// ============ Reading flow ============
+let userInfo = null;
+const revealBtn = document.getElementById('revealBtn');
+const loading = document.getElementById('loading');
+const resultEl = document.getElementById('result');
+
+revealBtn.addEventListener('click', async () => {
+  const name = document.getElementById('dogName').value.trim() || 'Your Pup';
+  const breed = document.getElementById('dogBreed').value;
+  const birthday = document.getElementById('dogBirthday').value;
+  userInfo = { name, breed, birthday, photo: dogPhotoDataUrl };
+
+  revealBtn.disabled = true;
+  loading.classList.add('show');
+  resultEl.classList.remove('show');
+  resultEl.innerHTML = '';
+
+  const freePrompt = `You are a Korean astrologer (사주 명리학자) reading destiny of a beloved dog.
+
+Dog: ${name}
+Breed: ${breed}
+Birthday: ${birthday || 'unknown'}
+
+Generate a SHORT FREE preview in 3 sections (markdown):
+
+# The Cloud Spirit
+*하늘의 영혼 — Spirit of the Sky*
+[2-3 sentences. Poetic, mystical, positive. Cloud/star/light imagery.]
+
+# The Element of [Water/Fire/Wood/Metal/Earth]
+*오행의 기운 — Element Reading*
+[2-3 sentences. Assign one of 5 Korean elements (목·화·토·금·수 / Wood·Fire·Earth·Metal·Water). Include lucky color and direction.]
+
+# Past-Life Bond
+*전생의 인연 — Karmic Connection*
+[2-3 sentences. Imagine past-life identity (temple guardian, poet's companion, royal pet, etc) and why you met.]
+
+Tone: cute, mystical, warm, dreamy. Korean K-mystic vibes with playful pup energy.
+Use **bold** for 1-2 key phrases per section. Use *italic* for soft emphasis.`;
+
+  try {
+    const freeReading = await callGemini(freePrompt);
+    loading.classList.remove('show');
+    renderFreeReading(freeReading);
+    resultEl.classList.add('show');
+    setTimeout(() => mountPayPalButton(), 100);
+  } catch (e) {
+    loading.classList.remove('show');
+    showToast('⚠️ The stars are shy. Try again? 💫');
+    revealBtn.disabled = false;
+  }
+});
+
+function parseMarkdownSections(md) {
+  const sections = [];
+  const lines = md.split('\n');
+  let current = null;
+  for (const line of lines) {
+    if (/^#\s+/.test(line)) {
+      if (current) sections.push(current);
+      current = { title: line.replace(/^#\s+/, '').trim(), body: '' };
+    } else if (current) {
+      current.body += line + '\n';
+    }
+  }
+  if (current) sections.push(current);
+  return sections;
+}
+
+function renderInlineMd(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+function renderFreeReading(md) {
+  const sections = parseMarkdownSections(md);
+  const cardsHtml = sections.map((s, i) => {
+    const koMatch = s.body.match(/^\s*\*(.+?)\*/m);
+    const koTitle = koMatch ? koMatch[1] : '';
+    const body = s.body.replace(/^\s*\*.+?\*\s*\n?/m, '').trim();
+    return '<div class="reading-card">' +
+      '<h3><span class="card-num">' + (i + 1) + '</span>' + renderInlineMd(s.title) + '</h3>' +
+      (koTitle ? '<div class="ko-title">' + renderInlineMd(koTitle) + '</div>' : '') +
+      '<div class="body">' + renderInlineMd(body) + '</div>' +
+    '</div>';
+  }).join('');
+
+  const noPaypal = !window._paypalReady && (!window.PAYPAL_CLIENT_ID || window.PAYPAL_CLIENT_ID === '__PAYPAL_CLIENT_ID__' || window.PAYPAL_CLIENT_ID.length < 20);
+  resultEl.innerHTML = cardsHtml + `
+    <div class="magic-cta" id="proSection">
+      <div class="magic-cta-inner">
+        <div class="magic-cta-eyebrow">✨ Tap to Cast the Magic ✨</div>
+        <h2>🎴 Generate AI Mystic Card</h2>
+        <div class="ko-title">평생 운명 + AI 카드 생성</div>
+        <ul class="features">
+          <li><span class="ic">🪄</span> AI generates your dog's destiny card image</li>
+          <li><span class="ic">📜</span> Lifelong fortune — 5 deep chapters</li>
+          <li><span class="ic">🍲</span> Health & Korean herbal food guidance</li>
+          <li><span class="ic">🌅</span> Lucky walking hours by element</li>
+          <li><span class="ic">💰</span> Wealth influence on owner</li>
+          <li><span class="ic">⬇</span> Download &amp; share to Instagram</li>
+        </ul>
+        <div class="price-row">
+          <span class="price-strike">$14.99</span>
+          <span class="price-num">$4.99</span>
+        </div>
+        <div class="price-label">one-time · forever yours · today only</div>
+        <div id="paypal-buttons-container"></div>
+        ${noPaypal ? '<div style="margin-top:10px; padding:10px 14px; background:#fef3c7; border:1px dashed #fbbf24; border-radius:12px; color:#78350f; font-size:0.82rem; font-family:Comfortaa,sans-serif;">⚠️ <b>Payment temporarily unavailable</b> — operator needs to configure PayPal Client ID. (Connect AI → 외부 연결 → PayPal)</div>' : ''}
+        <div class="trust-row">
+          <span>Secure PayPal</span>
+          <span>30-day refund</span>
+          <span>Instant unlock</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============ PayPal ============
+let paypalMounted = false;
+function mountPayPalButton() {
+  if (paypalMounted) return;
+  if (!window.paypal) { setTimeout(mountPayPalButton, 400); return; }
+  paypalMounted = true;
+  window.paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal', height: 48 },
+    createOrder: (d, actions) => actions.order.create({
+      intent: 'CAPTURE',
+      purchase_units: [{
+        amount: { currency_code: 'USD', value: '4.99' },
+        description: 'Doggie Mystic — Full Destiny Reading'
+      }]
+    }),
+    onApprove: async (d, actions) => {
+      const details = await actions.order.capture();
+      console.log('Premium unlocked:', details);
+      unlockPremium();
+    },
+    onError: (err) => { console.error(err); showToast('💔 Payment issue. Try again?'); },
+    onCancel: () => showToast('💕 No worries, the stars wait for you.')
+  }).render('#paypal-buttons-container');
+}
+
+async function unlockPremium() {
+  const proSection = document.getElementById('proSection');
+  proSection.classList.add('generating');
+  proSection.innerHTML = '<div class="magic-cta-inner"><div class="magic-cta-eyebrow" style="background:linear-gradient(135deg,var(--mint-deep),var(--cyan)); color:white;">✨ Magic in Progress ✨</div><h2>🪄 Casting your destiny...</h2><div class="ko-title">AI 가 마법을 부리는 중 ✨</div><div class="loading show" style="padding:20px 0;"><div class="crystal-ball"></div><p>Weaving full reading + generating card<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></p></div></div>';
+
+  const fullPrompt = `You are a Korean astrologer giving a full premium destiny reading for ${userInfo.name} (${userInfo.breed}, born ${userInfo.birthday || 'unknown'}).
+
+Generate 5 deep sections in markdown:
+
+# Lifelong Destiny
+*평생 운명 — Lifelong Fortune*
+[4-5 sentences. Reference life chapters by age. Specific peak fortune years.]
+
+# Health Guidance
+*건강운 — Health Reading*
+[4-5 sentences. Element-based food. Avoid list. Lucky food.]
+
+# Walking Hours
+*산책 시각 — Walking Direction*
+[3-4 sentences. Traditional Korean 12 hours (자축인묘진사오미신유술해). Specific times + directions.]
+
+# Compatible Pups
+*궁합 견종 — Compatible Breeds*
+[3-4 sentences. 3 specific best breeds, 1 to avoid, ideal human zodiac.]
+
+# Wealth Influence
+*재물운 — Owner Fortune*
+[4-5 sentences. How this dog influences owner's luck. Specific lucky activities together.]
+
+Tone: cute, dreamy, mystical Korean K-style. Gloriously positive. Use **bold** + *italic* liberally.`;
+
+  const fullReading = await callGemini(fullPrompt);
+  const fullSections = parseMarkdownSections(fullReading);
+  const fullCards = fullSections.map((s, i) => {
+    const koMatch = s.body.match(/^\s*\*(.+?)\*/m);
+    const koTitle = koMatch ? koMatch[1] : '';
+    const body = s.body.replace(/^\s*\*.+?\*\s*\n?/m, '').trim();
+    return '<div class="reading-card">' +
+      '<h3><span class="card-num">' + (i + 1) + '</span>' + renderInlineMd(s.title) + '</h3>' +
+      (koTitle ? '<div class="ko-title">' + renderInlineMd(koTitle) + '</div>' : '') +
+      '<div class="body">' + renderInlineMd(body) + '</div>' +
+    '</div>';
+  }).join('');
+
+  proSection.classList.remove('generating');
+  proSection.style.background = 'transparent';
+  proSection.style.padding = '0';
+  proSection.style.boxShadow = 'none';
+  proSection.innerHTML = '<div style="text-align:center; margin: 18px 0 22px;"><div style="display:inline-block; padding:6px 16px; background:linear-gradient(135deg,var(--mint-deep),var(--cyan)); color:white; border-radius:999px; font-family:Fredoka,sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase;">✨ Destiny Unlocked ✨</div></div>' + fullCards;
+
+  // Generate AI mystic card image
+  const imgPrompt = `A cute mystical Korean fortune-telling card featuring a ${userInfo.breed} dog. Soft dreamy pastel art style: lavender, pink, gold, cream colors. Ancient Korean astrology symbols (음양오행), star constellations, moon, soft ethereal light, kawaii style. Portrait 3:4. The dog has a gentle smile. Decorative gold border with traditional Korean cloud patterns. Magical and adorable.`;
+  const imageData = await generateMysticImage(imgPrompt);
+  if (imageData) {
+    const downloadName = `${userInfo.name.replace(/[^a-zA-Z0-9]/g, '_')}_Mystic_Card.png`;
+    const imageHtml = '<div class="mystic-image-card">' +
+      '<img src="' + imageData + '" alt="Mystic Card" />' +
+      '<div class="card-name">' + userInfo.name + '</div>' +
+      '<div class="card-breed">' + userInfo.breed + ' · 평생 운명 카드</div>' +
+      '<a href="' + imageData + '" download="' + downloadName + '" class="download-btn">⬇ Download</a>' +
+      '<a href="#" class="download-btn" onclick="navigator.share?.({title:\'My Dog Mystic Card\', url: location.href}); return false;" style="background:linear-gradient(135deg,var(--gold),var(--peach));">📲 Share</a>' +
+    '</div>';
+    proSection.insertAdjacentHTML('beforeend', imageHtml);
+  }
+}
+</script>
+
+</body>
+</html>
