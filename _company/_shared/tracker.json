@@ -1,0 +1,51 @@
+{
+  "tasks": [
+    {
+      "id": "20260528083153-thwk",
+      "title": "유튜브 바이럴 ABC 송 기반 영상 기획 및 제작",
+      "description": "유튜브에서 바이럴 ABC 송 찾기\n설명에서 가사 복사하기\nChatGPT에게 만화 프롬프트 요청하기\n\n그걸 AI 비디오 도구에 붙여넣기.\n\n강아지들, 글자들, 풍선들, 밝은 색상들.\n\n이런 식으로 유투브 영상을 만들수 있게 미리 찾아서 계획 세워줘",
+      "owner": "agent",
+      "createdAt": "2026-05-28T08:31:53.930Z",
+      "status": "done",
+      "nudges": 0,
+      "priority": "normal",
+      "preAlarmsSent": [],
+      "sessionDir": "2026-05-28T08-31",
+      "evidence": "완료: sessions/2026-05-28T08-31/_report.md\n- Researcher: 유튜브에서 현재 가장 바이럴 중인 'ABC 송' (예: Wheels on the Bus, Baa Baa Black Sheep 등)을 3가지 후보\n- Writer: 연구자가 추출한 가사(후보 1 기준)와 '강아지들, 글자들, 풍선들, 밝은 색상들' 요소를 조합하여, AI 비디오 도구에 최적화된 상세한 만화 \n- 레오: 작성된 만화 프롬프트와 추출된 가사(후보 1)를 기반으로, 영상의 전체 기획안을 작성해 주세요. 기획안에는 다음 항목이 반드시 포함되어야 합니다\n\nCEO 종합 요점: ## 🗂 작업 라운드 — 누가 뭐 했나\n\n### 🔍 Researcher _(Trend & Data Researcher)_\n> 📋 **지시**: 유튜브에서 현재 가장 바이럴 중인 'ABC 송' (예: Wheels on the Bus, Baa Baa Black Sheep 등)을 3가지 후보로 리서치하고, 해당 영상의 설명에서 가사를 추출하여 정리해 주세요",
+      "completedAt": "2026-05-28T08:41:47.871Z"
+    },
+    {
+      "id": "20260602020937-cjsb",
+      "title": "카드뉴스 시안 전달",
+      "description": "디자이너, 카드뉴스 시안 보여줘",
+      "owner": "agent",
+      "createdAt": "2026-06-02T02:09:37.508Z",
+      "status": "in_progress",
+      "nudges": 0,
+      "priority": "normal",
+      "preAlarmsSent": []
+    },
+    {
+      "id": "20260604051103-w1lc",
+      "title": "트윗 분석 및 활용 아이디어 도출",
+      "description": "https://x.com/damnang2/status/2046013774059160019?s=52",
+      "owner": "agent",
+      "createdAt": "2026-06-04T05:11:03.217Z",
+      "status": "in_progress",
+      "nudges": 0,
+      "priority": "normal",
+      "preAlarmsSent": []
+    },
+    {
+      "id": "20260608131135-xcq8",
+      "title": "썸네일 제작",
+      "description": "썸네일 만들어줘",
+      "owner": "agent",
+      "createdAt": "2026-06-08T13:11:35.514Z",
+      "status": "in_progress",
+      "nudges": 0,
+      "priority": "normal",
+      "preAlarmsSent": []
+    }
+  ]
+}

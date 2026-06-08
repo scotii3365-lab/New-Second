@@ -22,14 +22,15 @@ AUTONOMY_LEVEL: 2
 
 ## 사용 가능한 도구
 
-_⚠️ 이 에이전트의 도구는 모두 로드맵 단계입니다. 현재 LLM 추론만 가능하고, 외부 API 호출이나 파일 생성은 아직 동작하지 않습니다._
+### `image_local`
+맥미니 로컬 Draw Things 앱(HTTP API 서버)을 통해 이미지를 직접 생성합니다.
+
+- **설정**: `image_local.json` 파일에서 `prompt` (반드시 영어로 상세 묘사된 퀄리티 키워드 포함), `negative_prompt`, `width`, `height`, `steps`, `cfg_scale`, `output_filename` 등의 설정을 사전에 수정하여 사용합니다.
+- **자율 실행 규칙**: 이미지 생성을 수행하기 전, 반드시 요구사항에 맞게 `image_local.json` 파일을 최적화된 영어 프롬프트와 비율/해상도로 **직접 수정하여 덮어쓴 뒤** 도구를 호출하십시오.
+
+---
 
 ## 로드맵 (예정)
-
-### `image_local` _(예정)_
-로컬 SDXL/FLUX 이미지 생성 (오프라인 정체성)
-
-- 아직 구현되지 않은 도구입니다. 로드맵에 있으며 향후 버전에서 추가 예정.
 
 ### `image_cloud` _(예정)_
 DALL-E/Replicate (Connected 모드 토글)
