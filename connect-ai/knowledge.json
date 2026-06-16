@@ -78,5 +78,21 @@
     "category": "design",
     "source": "agent",
     "verified": true
+  },
+  {
+    "id": "n17815762420779581",
+    "text": "[운영 2026-06-16 사이클#9] Researcher: 지난 성공 영상 데이터(Mockup)와 MrBeast 후킹 로직을 교차 분석하여, 시청자가 가장 많이 이탈했 / Writer: (입력: 위기 고조 지점 리포트)와 현빈님이 조사한 수익 모델 중 가장 높은 잠재력을 가진 A안을 결합하여, / Designer: (입력: 유튜브 스크립트 초안)을 바탕으로, 영상별 필수 BGM/효과음 리스트와 촬영 시 필요한 카메라 각도",
+    "tags": [
+      "가장",
+      "입력",
+      "2026",
+      "운영",
+      "사이클",
+      "researcher"
+    ],
+    "ts": 1781576242077,
+    "category": "marketing",
+    "source": "agent",
+    "verified": true
   }
 ]
